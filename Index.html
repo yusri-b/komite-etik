@@ -1,0 +1,1930 @@
+<!doctype html>
+<html lang="id" class="h-full bg-slate-50">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSUD Mamuju Tengah - Sistem Pengaduan Komite Etik</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              medical: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                500: "#0284c7",
+                600: "#0369a1",
+                700: "#075985",
+                800: "#0c4a6e",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 9px;
+        top: 24px;
+        bottom: -16px;
+        width: 2px;
+        background-color: #e2e8f0;
+      }
+      .timeline-item:last-child::before {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body
+    class="h-full bg-slate-50 text-slate-800 antialiased selection:bg-medical-500 selection:text-white"
+  >
+    <!-- 1. LOGIN & PUBLIC ENTRY SCREEN -->
+    <div
+      id="login-screen"
+      class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-900 relative overflow-hidden"
+    >
+      <!-- Subtle Background Glows -->
+      <div
+        class="absolute -top-40 -left-40 w-96 h-96 bg-medical-600/20 rounded-full blur-3xl pointer-events-none"
+      ></div>
+      <div
+        class="absolute -bottom-40 -right-40 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"
+      ></div>
+
+      <div class="sm:mx-auto sm:w-full sm:max-w-md z-10">
+        <div class="flex justify-center items-center space-x-3">
+          <div
+            class="h-12 w-12 rounded-2xl bg-medical-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-medical-600/50"
+          >
+            <i class="fa-solid fa-hospital-user"></i>
+          </div>
+          <span class="text-2xl font-black tracking-tight text-white"
+            >RSUD <span class="text-medical-500">Mamuju Tengah</span></span
+          >
+        </div>
+        <h2
+          class="mt-4 text-center text-xs font-semibold uppercase tracking-widest text-slate-400"
+        >
+          Sistem Pengaduan Komite Medik Rumah Sakit Mamuju Tengah
+        </h2>
+      </div>
+
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4">
+        <div
+          class="bg-white/95 backdrop-blur-md py-8 px-6 shadow-2xl rounded-3xl border border-white/20 sm:px-10 space-y-6"
+        >
+          <!-- Error Alert -->
+          <div
+            id="login-error"
+            class="hidden rounded-2xl bg-rose-50 p-4 border border-rose-200"
+          >
+            <div class="flex items-center space-x-3">
+              <i class="fa-solid fa-circle-exclamation text-rose-600"></i>
+              <p
+                id="login-error-text"
+                class="text-xs font-semibold text-rose-800"
+              >
+                Login gagal
+              </p>
+            </div>
+          </div>
+
+          <form
+            id="form-login"
+            onsubmit="handleLoginSubmit(event)"
+            class="space-y-4"
+          >
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                >Nama Pengguna / Username</label
+              >
+              <div class="relative">
+                <i
+                  class="fa-solid fa-user absolute left-3.5 top-3.5 text-slate-400 text-xs"
+                ></i>
+                <input
+                  type="text"
+                  id="login-username"
+                  required
+                  class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20 transition-all"
+                  placeholder="Masukkan username Anda"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+                >Kata Sandi / Password</label
+              >
+              <div class="relative">
+                <i
+                  class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"
+                ></i>
+                <input
+                  type="password"
+                  id="login-password"
+                  required
+                  class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-medical-500 focus:ring-2 focus:ring-medical-500/20 transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full flex justify-center items-center space-x-2 py-3 px-4 rounded-xl text-xs font-bold text-white bg-medical-600 hover:bg-medical-700 focus:outline-none shadow-lg shadow-medical-600/30 transition-all"
+            >
+              <span id="login-btn-text">Masuk Ke Sistem</span>
+              <i
+                id="login-btn-spinner"
+                class="fa-solid fa-circle-notch fa-spin hidden"
+              ></i>
+            </button>
+          </form>
+
+          <div class="relative my-4">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-slate-200"></div>
+            </div>
+            <div class="relative flex justify-center text-xs uppercase">
+              <span
+                class="bg-white px-3 text-slate-400 font-semibold text-[10px]"
+                >Akses Publik / Tanpa Login</span
+              >
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              type="button"
+              onclick="showPublicView('create')"
+              class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all flex items-center justify-center space-x-2"
+            >
+              <i class="fa-solid fa-pen-to-square text-medical-600"></i>
+              <span>Buat Pengaduan</span>
+            </button>
+            <button
+              type="button"
+              onclick="showPublicView('track')"
+              class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all flex items-center justify-center space-x-2"
+            >
+              <i class="fa-solid fa-magnifying-glass text-teal-600"></i>
+              <span>Lacak Status</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. PUBLIC ANONYMOUS / GUEST CONTAINER -->
+    <div
+      id="public-view-container"
+      class="hidden min-h-screen bg-slate-50 p-4 sm:p-8"
+    >
+      <div class="max-w-3xl mx-auto space-y-4">
+        <button
+          onclick="hidePublicView()"
+          class="inline-flex items-center space-x-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-sm transition-all"
+        >
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke Halaman Login</span>
+        </button>
+
+        <div
+          id="public-content-area"
+          class="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl"
+        >
+          <!-- Content dynamically injected -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MAIN AUTHENTICATED APP SHELL -->
+    <div id="app-shell" class="hidden min-h-screen flex flex-col lg:flex-row">
+      <!-- Mobile Navigation Drawer Backdrop -->
+      <div
+        id="mobile-sidebar-backdrop"
+        onclick="toggleMobileSidebar()"
+        class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
+      ></div>
+
+      <!-- Mobile Sidebar Drawer -->
+      <aside
+        id="mobile-sidebar"
+        class="fixed inset-y-0 left-0 w-72 bg-slate-900 text-slate-300 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden flex flex-col justify-between p-4"
+      >
+        <div class="space-y-6">
+          <div class="flex items-center justify-between px-2 pt-2">
+            <div class="flex items-center space-x-2">
+              <div
+                class="h-8 w-8 rounded-xl bg-medical-600 text-white flex items-center justify-center font-bold"
+              >
+                <i class="fa-solid fa-hospital-user text-sm"></i>
+              </div>
+              <span class="font-black text-white text-base">SIMPEL MEDIK</span>
+            </div>
+            <button
+              onclick="toggleMobileSidebar()"
+              class="text-slate-400 hover:text-white"
+            >
+              <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+          </div>
+
+          <nav id="mobile-nav-container" class="space-y-1">
+            <!-- Dynamically populated -->
+          </nav>
+        </div>
+
+        <div class="border-t border-slate-800 pt-4 px-2">
+          <button
+            onclick="handleLogout()"
+            class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition-all"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Keluar</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Desktop Sidebar -->
+      <aside
+        class="hidden lg:flex w-64 bg-slate-900 text-slate-300 flex-col justify-between p-5 border-r border-slate-800 shrink-0"
+      >
+        <div class="space-y-8">
+          <div class="flex items-center space-x-3 px-2">
+            <div
+              class="h-10 w-10 rounded-xl bg-medical-600 text-white flex items-center justify-center text-xl shadow-lg shadow-medical-600/30"
+            >
+              <i class="fa-solid fa-hospital-user"></i>
+            </div>
+            <div>
+              <span class="font-black text-white text-base block leading-none"
+                >SIMPEL MEDIK</span
+              >
+              <span class="text-[10px] text-slate-400 font-medium"
+                >Komite Etik RS</span
+              >
+            </div>
+          </div>
+
+          <nav id="desktop-nav-container" class="space-y-1.5">
+            <!-- Dynamically populated -->
+          </nav>
+        </div>
+
+        <div class="border-t border-slate-800 pt-4 space-y-3">
+          <div class="flex items-center space-x-3 px-2">
+            <div
+              class="h-9 w-9 rounded-xl bg-slate-800 text-medical-500 flex items-center justify-center font-bold text-sm"
+            >
+              <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p
+                id="user-display-name"
+                class="text-xs font-bold text-white truncate"
+              >
+                Dr. Pengguna
+              </p>
+              <p
+                id="user-display-role"
+                class="text-[10px] text-slate-400 truncate"
+              >
+                Role
+              </p>
+            </div>
+          </div>
+
+          <button
+            onclick="handleLogout()"
+            class="w-full flex items-center space-x-3 px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 transition-all"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Keluar System</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Container -->
+      <main class="flex-1 flex flex-col min-w-0 bg-slate-50 min-h-screen">
+        <!-- Topbar Header -->
+        <header
+          class="bg-white border-b border-slate-200 px-4 sm:px-8 py-4 flex items-center justify-between sticky top-0 z-30 shadow-sm"
+        >
+          <div class="flex items-center space-x-3">
+            <button
+              onclick="toggleMobileSidebar()"
+              class="lg:hidden text-slate-600 hover:text-slate-900 text-lg p-1.5 rounded-lg border border-slate-200"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <h1
+              id="page-title"
+              class="text-base sm:text-lg font-bold text-slate-800"
+            >
+              Dashboard Utama
+            </h1>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <span
+              class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"
+            >
+              <span
+                class="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2 animate-pulse"
+              ></span>
+              Sistem Aktif
+            </span>
+          </div>
+        </header>
+
+        <!-- Dynamic Page View Container -->
+        <div id="app-view" class="p-4 sm:p-8 flex-1">
+          <!-- Rendered view content -->
+        </div>
+      </main>
+    </div>
+
+    <!-- 4. MODAL CONTAINER -->
+    <div
+      id="modal-container"
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto"
+    >
+      <div
+        class="bg-white rounded-3xl border border-slate-100 shadow-2xl w-full max-w-lg p-6 relative max-h-[90vh] overflow-y-auto"
+      >
+        <button
+          onclick="closeModal()"
+          class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 h-8 w-8 rounded-full flex items-center justify-center bg-slate-100"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+
+    <!-- 5. TOAST NOTIFICATION CONTAINER -->
+    <div
+      id="toast-container"
+      class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"
+    ></div>
+
+    <script>
+      // Global Application State
+      const State = {
+        currentUser: null,
+        sessionToken: null,
+        currentView: "dashboard",
+      };
+
+      // Unified API Layer supporting both native Apps Script & Editor Preview Mocking
+      const API = {
+        call: function (fnName, ...args) {
+          return new Promise((resolve) => {
+            if (
+              typeof google !== "undefined" &&
+              google.script &&
+              google.script.run
+            ) {
+              const runner = google.script.run
+                .withSuccessHandler((res) =>
+                  resolve(
+                    res || {
+                      success: false,
+                      message: "Respon server tidak valid atau kosong",
+                    },
+                  ),
+                )
+                .withFailureHandler((err) =>
+                  resolve({
+                    success: false,
+                    message: (err && err.message) || "Terjadi kesalahan server",
+                  }),
+                );
+
+              if (typeof runner[fnName] === "function") {
+                runner[fnName](...args);
+              } else {
+                console.warn(
+                  `[API.call] Backend function '${fnName}' is not defined on google.script.run.`,
+                );
+                const mockRes = getMockResponse(fnName, args);
+                if (mockRes) {
+                  resolve(mockRes);
+                } else {
+                  resolve({
+                    success: false,
+                    message: `Fungsi backend '${fnName}' tidak ditemukan atau belum dideploy di Code.gs.`,
+                  });
+                }
+              }
+            } else {
+              // Mock Response Layer for Preview Mode
+              setTimeout(() => {
+                const mockRes = getMockResponse(fnName, args);
+                resolve(
+                  mockRes || {
+                    success: false,
+                    message: "Mock data tidak ditemukan",
+                  },
+                );
+              }, 300);
+            }
+          });
+        },
+      };
+
+      window.addEventListener("DOMContentLoaded", () => {
+        initApp();
+      });
+
+      function initApp() {
+        const savedToken = localStorage.getItem("simpel_medik_token");
+        if (savedToken) {
+          State.sessionToken = savedToken;
+          API.call("validateSession", savedToken).then((res) => {
+            if (res && res.success && res.data) {
+              State.currentUser = res.data.user;
+              initAppShell();
+              navigate("dashboard");
+            } else {
+              showLoginScreen();
+            }
+          });
+        } else {
+          showLoginScreen();
+        }
+      }
+
+      function showLoginScreen() {
+        document.getElementById("login-screen").classList.remove("hidden");
+        document.getElementById("app-shell").classList.add("hidden");
+        document
+          .getElementById("public-view-container")
+          .classList.add("hidden");
+      }
+
+      function initAppShell() {
+        document.getElementById("login-screen").classList.add("hidden");
+        document
+          .getElementById("public-view-container")
+          .classList.add("hidden");
+        document.getElementById("app-shell").classList.remove("hidden");
+
+        if (State.currentUser) {
+          document.getElementById("user-display-name").innerText =
+            State.currentUser.full_name || State.currentUser.username;
+          document.getElementById("user-display-role").innerText =
+            State.currentUser.role_id || "User";
+        }
+        buildNavigationMenu();
+      }
+
+      function buildNavigationMenu() {
+        const role = State.currentUser
+          ? State.currentUser.role_id
+          : "ROL-PELAPOR";
+
+        const navItems = [
+          {
+            id: "dashboard",
+            label: "Dashboard",
+            icon: "fa-chart-pie",
+            roles: ["ALL"],
+          },
+          {
+            id: "complaints",
+            label: "Pengaduan",
+            icon: "fa-file-medical",
+            roles: ["ALL"],
+          },
+          {
+            id: "reports",
+            label: "Laporan",
+            icon: "fa-chart-column",
+            roles: [
+              "ROL-ADMIN",
+              "ROL-SEKRETARIAT",
+              "ROL-ANGGOTA_KOMITE_MEDIK",
+              "ROL-KETUA_KOMITE_MEDIK",
+            ],
+          },
+          {
+            id: "audit-log",
+            label: "Audit Log",
+            icon: "fa-clock-rotate-left",
+            roles: ["ROL-ADMIN"],
+          },
+          {
+            id: "master-data",
+            label: "Master Data",
+            icon: "fa-database",
+            roles: ["ROL-ADMIN"],
+          },
+        ];
+
+        const desktopContainer = document.getElementById(
+          "desktop-nav-container",
+        );
+        const mobileContainer = document.getElementById("mobile-nav-container");
+
+        if (!desktopContainer || !mobileContainer) return;
+
+        desktopContainer.innerHTML = "";
+        mobileContainer.innerHTML = "";
+
+        const createNavButton = (item) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.onclick = (e) => {
+            e.preventDefault();
+            navigate(item.id);
+          };
+          btn.className = `w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+            State.currentView === item.id
+              ? "bg-medical-600 text-white shadow-md shadow-medical-600/30"
+              : "text-slate-400 hover:text-white hover:bg-slate-800"
+          }`;
+          btn.innerHTML = `<i class="fa-solid ${item.icon} text-sm w-5 text-center"></i><span>${item.label}</span>`;
+          return btn;
+        };
+
+        navItems.forEach((item) => {
+          if (item.roles.includes("ALL") || item.roles.includes(role)) {
+            desktopContainer.appendChild(createNavButton(item));
+            mobileContainer.appendChild(createNavButton(item));
+          }
+        });
+      }
+
+      async function navigate(viewName, params = {}) {
+        State.currentView = viewName;
+        buildNavigationMenu();
+
+        const viewContainer = document.getElementById("app-view");
+        const pageTitle = document.getElementById("page-title");
+
+        // Close mobile sidebar if active
+        document
+          .getElementById("mobile-sidebar")
+          .classList.add("-translate-x-full");
+        document
+          .getElementById("mobile-sidebar-backdrop")
+          .classList.add("hidden");
+
+        viewContainer.innerHTML =
+          '<div class="flex justify-center p-12"><i class="fa-solid fa-circle-notch fa-spin text-2xl text-medical-600"></i></div>';
+
+        switch (viewName) {
+          case "dashboard":
+            pageTitle.innerText = "Dashboard Utama";
+            await renderDashboardView(viewContainer);
+            break;
+          case "complaints":
+            pageTitle.innerText = "Daftar Pengaduan";
+            await renderComplaintsListView(viewContainer);
+            break;
+          case "complaint-create":
+            pageTitle.innerText = "Buat Pengaduan Baru";
+            renderComplaintCreateForm(viewContainer);
+            break;
+          case "complaint-detail":
+            pageTitle.innerText = "Detail Pengaduan";
+            await renderComplaintDetailView(viewContainer, params.complaintId);
+            break;
+          case "reports":
+            pageTitle.innerText = "Laporan & Analytics";
+            await renderReportsView(viewContainer);
+            break;
+          case "audit-log":
+            pageTitle.innerText = "Audit Log Sistem";
+            renderAuditLogView(viewContainer);
+            break;
+          case "master-data":
+            pageTitle.innerText = "Master Data Sistem";
+            renderMasterDataView(viewContainer);
+            break;
+          default:
+            pageTitle.innerText = "Dashboard";
+            await renderDashboardView(viewContainer);
+        }
+      }
+
+      async function renderDashboardView(container) {
+        try {
+          const res = await API.call("getDashboardSummary", State.sessionToken);
+          const data = res.success
+            ? res.data
+            : {
+                total_complaints: 0,
+                submitted_count: 0,
+                under_review_count: 0,
+                followup_count: 0,
+                completed_count: 0,
+                overdue_complaints: 0,
+              };
+
+          container.innerHTML = `
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Pengaduan</p>
+                  <p class="text-2xl font-bold text-slate-800 mt-1">${data.total_complaints}</p>
+                </div>
+                <div class="h-12 w-12 rounded-xl bg-medical-50 text-medical-600 flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-folder-open"></i>
+                </div>
+              </div>
+
+              <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Belum Diverifikasi</p>
+                  <p class="text-2xl font-bold text-amber-600 mt-1">${data.submitted_count}</p>
+                </div>
+                <div class="h-12 w-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+              </div>
+
+              <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Dalam Telaah</p>
+                  <p class="text-2xl font-bold text-sky-600 mt-1">${data.under_review_count}</p>
+                </div>
+                <div class="h-12 w-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-stethoscope"></i>
+                </div>
+              </div>
+
+              <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Selesai</p>
+                  <p class="text-2xl font-bold text-emerald-600 mt-1">${data.followup_count}</p>
+                </div>
+                <div class="h-12 w-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+              </div>
+            </div>
+
+            ${
+              data.overdue_complaints > 0
+                ? `
+              <div class="rounded-xl bg-rose-50 p-4 border border-rose-200 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <i class="fa-solid fa-triangle-exclamation text-rose-600 text-lg"></i>
+                  <div>
+                    <p class="text-xs font-bold text-rose-800">Peringatan Overdue SLA</p>
+                    <p class="text-xs text-rose-600">Terdapat ${data.overdue_complaints} pengaduan aktif yang telah melewati batas SLA penanganan.</p>
+                  </div>
+                </div>
+                <button onclick="navigate('complaints')" class="text-xs font-semibold text-rose-700 underline">Lihat Detail</button>
+              </div>
+            `
+                : ""
+            }
+
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-bold text-slate-800">Pengaduan Terbaru</h3>
+                <button onclick="navigate('complaints')" class="text-xs font-semibold text-medical-600 hover:text-medical-700">Lihat Semua</button>
+              </div>
+              <div id="dashboard-recent-list" class="divide-y divide-slate-100">
+                <p class="text-xs text-slate-400 py-4 text-center">Memuat data pengaduan...</p>
+              </div>
+            </div>
+          </div>
+        `;
+
+          const listRes = await API.call("getComplaints", State.sessionToken, {
+            page: 1,
+            pageSize: 5,
+          });
+          const listContainer = document.getElementById(
+            "dashboard-recent-list",
+          );
+          if (listRes.success && listRes.data && listRes.data.length > 0) {
+            listContainer.innerHTML = listRes.data
+              .map(
+                (item) => `
+            <div onclick="navigate('complaint-detail', {complaintId: '${item.complaint_id}'})" class="py-3 flex items-center justify-between hover:bg-slate-50 cursor-pointer px-2 rounded-lg transition-colors">
+              <div class="space-y-1">
+                <div class="flex items-center space-x-2">
+                  <span class="font-bold text-xs text-slate-800">${item.complaint_number}</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${getStatusBadgeClass(item.status)}">${item.status}</span>
+                </div>
+                <p class="text-xs text-slate-600 line-clamp-1">${item.description}</p>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-slate-400 block">${formatDate(item.created_at)}</span>
+                <span class="text-[11px] font-medium text-slate-500">${item.reporter_name}</span>
+              </div>
+            </div>
+          `,
+              )
+              .join("");
+          } else {
+            listContainer.innerHTML =
+              '<p class="text-xs text-slate-400 py-4 text-center">Belum ada pengaduan tercatat.</p>';
+          }
+        } catch (err) {
+          container.innerHTML =
+            '<div class="rounded-xl bg-rose-50 p-4 text-rose-700 text-xs">Gagal memuat dashboard.</div>';
+        }
+      }
+
+      async function renderComplaintsListView(container) {
+        container.innerHTML = `
+        <div class="space-y-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="relative w-full sm:w-72">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+              <input type="text" id="filter-search" oninput="debounceFilterComplaints()" placeholder="Cari nomor, pelapor, deskripsi..." class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-medical-500">
+            </div>
+
+            <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+              <select id="filter-status" onchange="loadComplaintsTable()" class="border border-slate-200 rounded-xl text-xs py-2 px-3 focus:outline-none bg-white">
+                <option value="">Semua Status</option>
+                <option value="SUBMITTED">SUBMITTED</option>
+                <option value="ACCEPTED">ACCEPTED</option>
+                <option value="UNDER_REVIEW">UNDER_REVIEW</option>
+                <option value="RECOMMENDATION">RECOMMENDATION</option>
+                <option value="FOLLOW_UP">FOLLOW_UP</option>
+                <option value="COMPLETED">COMPLETED</option>
+                <option value="REJECTED">REJECTED</option>
+              </select>
+
+              <button onclick="navigate('complaint-create')" class="bg-medical-600 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-medical-700 transition-all">
+                <i class="fa-solid fa-plus mr-1"></i> Baru
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 border-b border-slate-100 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+                  <tr>
+                    <th class="py-3 px-4">No. Pengaduan</th>
+                    <th class="py-3 px-4">Pelapor / Unit</th>
+                    <th class="py-3 px-4">Kategori</th>
+                    <th class="py-3 px-4">Prioritas</th>
+                    <th class="py-3 px-4">Status</th>
+                    <th class="py-3 px-4">Tanggal</th>
+                    <th class="py-3 px-4 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="complaints-table-body" class="divide-y divide-slate-100">
+                  <tr><td colspan="7" class="text-center py-6 text-slate-400">Memuat data...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+
+        loadComplaintsTable();
+      }
+
+      async function loadComplaintsTable() {
+        const tbody = document.getElementById("complaints-table-body");
+        const searchVal = document.getElementById("filter-search")?.value || "";
+        const statusVal = document.getElementById("filter-status")?.value || "";
+
+        try {
+          const res = await API.call("getComplaints", State.sessionToken, {
+            search: searchVal,
+            status: statusVal,
+          });
+          if (res.success && res.data && res.data.length > 0) {
+            tbody.innerHTML = res.data
+              .map(
+                (item) => `
+            <tr class="hover:bg-slate-50/80 transition-colors">
+              <td class="py-3 px-4 font-bold text-slate-800">${item.complaint_number}</td>
+              <td class="py-3 px-4">
+                <p class="font-medium text-slate-800">${item.reporter_name}</p>
+                <p class="text-[10px] text-slate-400">${item.reporter_unit_id}</p>
+              </td>
+              <td class="py-3 px-4">${item.category_id}</td>
+              <td class="py-3 px-4">
+                <span class="font-semibold ${getPriorityTextColor(item.priority_id)}">${item.priority_id}</span>
+              </td>
+              <td class="py-3 px-4">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${getStatusBadgeClass(item.status)}">${item.status}</span>
+              </td>
+              <td class="py-3 px-4 text-slate-400">${formatDate(item.created_at)}</td>
+              <td class="py-3 px-4 text-right">
+                <button onclick="navigate('complaint-detail', {complaintId: '${item.complaint_id}'})" class="bg-slate-100 hover:bg-medical-50 text-medical-600 font-semibold px-2.5 py-1 rounded-lg text-[11px] transition-colors">
+                  Detail
+                </button>
+              </td>
+            </tr>
+          `,
+              )
+              .join("");
+          } else if (res.success) {
+            tbody.innerHTML =
+              '<tr><td colspan="7" class="text-center py-6 text-slate-400">Tidak ada data pengaduan ditemukan.</td></tr>';
+          } else {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-rose-500">${res.message || "Gagal mengambil data pengaduan."}</td></tr>`;
+          }
+        } catch (err) {
+          tbody.innerHTML =
+            '<tr><td colspan="7" class="text-center py-6 text-rose-500">Gagal mengambil data pengaduan: ' +
+            err.message +
+            "</td></tr>";
+        }
+      }
+
+      let searchDebounceTimeout;
+      function debounceFilterComplaints() {
+        clearTimeout(searchDebounceTimeout);
+        searchDebounceTimeout = setTimeout(() => loadComplaintsTable(), 300);
+      }
+
+      function renderComplaintCreateForm(container) {
+        container.innerHTML = `
+        <div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-5">
+          <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3">Formulir Pengaduan Medik</h3>
+          
+          <form id="form-create-complaint" onsubmit="handleComplaintSubmit(event)" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Kategori Pengaduan *</label>
+                <select id="cmp-category" required class="w-full border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-medical-500">
+                  <option value="">Pilih Kategori</option>
+                  <option value="ETIK">Etik Medik</option>
+                  <option value="DISIPLIN">Disiplin Medis</option>
+                  <option value="PROFESIONALISME">Profesionalisme</option>
+                  <option value="MUTU_PELAYANAN">Mutu Pelayanan</option>
+                  <option value="KESELAMATAN_PASIEN">Keselamatan Pasien</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tingkat Prioritas</label>
+                <select id="cmp-priority" class="w-full border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-medical-500">
+                  <option value="LOW">LOW (14 Hari)</option>
+                  <option value="MEDIUM" selected>MEDIUM (10 Hari)</option>
+                  <option value="HIGH">HIGH (5 Hari)</option>
+                  <option value="CRITICAL">CRITICAL (2 Hari)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tanggal Kejadian *</label>
+                <input type="date" id="cmp-incident-date" required class="w-full border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-medical-500">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Lokasi Kejadian</label>
+                <input type="text" id="cmp-incident-location" placeholder="Contoh: Ruang ICU / Poli Spesialis" class="w-full border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-medical-500">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Pihak Terkait / Terlapor</label>
+              <input type="text" id="cmp-related-party" placeholder="Nama Dokter / Tim Medis terkait" class="w-full border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-medical-500">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Deskripsi Kejadian / Kronologi *</label>
+              <textarea id="cmp-description" rows="5" required placeholder="Jelaskan secara mendetail kronologi kejadian medis..." class="w-full border border-slate-200 rounded-xl p-2.5 focus:outline-none focus:border-medical-500"></textarea>
+            </div>
+
+            <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+              <button type="button" onclick="navigate('complaints')" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold">Batal</button>
+              <button type="submit" id="btn-cmp-submit" class="bg-medical-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-medical-700 shadow-md">Kirim Pengaduan</button>
+            </div>
+          </form>
+        </div>
+      `;
+      }
+
+      async function handleComplaintSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById("btn-cmp-submit");
+        btn.disabled = true;
+        btn.innerText = "Menyimpan...";
+
+        const payload = {
+          category_id: document.getElementById("cmp-category").value,
+          priority_id: document.getElementById("cmp-priority").value,
+          incident_date: document.getElementById("cmp-incident-date").value,
+          incident_location: document.getElementById("cmp-incident-location")
+            .value,
+          related_party: document.getElementById("cmp-related-party").value,
+          description: document.getElementById("cmp-description").value,
+        };
+
+        try {
+          const res = await API.call(
+            "createComplaint",
+            State.sessionToken,
+            payload,
+          );
+          if (res.success) {
+            showToast(
+              "Pengaduan berhasil dibuat dengan nomor " +
+                (res.data.complaint
+                  ? res.data.complaint.complaint_number
+                  : "PM-2026-00001"),
+              "success",
+              10000,
+            );
+            navigate("complaints");
+          } else {
+            showToast(res.message || "Gagal menyimpan pengaduan", "error");
+            btn.disabled = false;
+            btn.innerText = "Kirim Pengaduan";
+          }
+        } catch (err) {
+          showToast("Terjadi kesalahan sistem", "error");
+          btn.disabled = false;
+          btn.innerText = "Kirim Pengaduan";
+        }
+      }
+
+      async function renderComplaintDetailView(container, complaintId) {
+        try {
+          const res = await API.call(
+            "getComplaintById",
+            State.sessionToken,
+            complaintId,
+          );
+          if (!res.success || !res.data) {
+            container.innerHTML =
+              '<div class="p-6 text-rose-600 bg-rose-50 rounded-2xl">Pengaduan tidak ditemukan.</div>';
+            return;
+          }
+
+          const cmp = res.data.complaint;
+          const timeline = res.data.timeline || [];
+          const role = State.currentUser ? State.currentUser.role_id : "";
+
+          container.innerHTML = `
+          <div class="space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center space-x-3">
+                  <h2 class="text-xl font-bold text-slate-800">${cmp.complaint_number}</h2>
+                  <span class="px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadgeClass(cmp.status)}">${cmp.status}</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Dibuat pada ${formatDate(cmp.created_at)} oleh <strong class="text-slate-600">${cmp.reporter_name}</strong> (${cmp.reporter_unit_id})</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                ${
+                  ["ROL-ADMIN", "ROL-SEKRETARIAT"].includes(role) &&
+                  cmp.status === "SUBMITTED"
+                    ? `
+                  <button onclick="openVerificationModal('${cmp.complaint_id}')" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-xl text-xs font-semibold shadow-sm">
+                    <i class="fa-solid fa-clipboard-check mr-1"></i> Verifikasi
+                  </button>
+                `
+                    : ""
+                }
+
+                ${
+                  [
+                    "ROL-ADMIN",
+                    "ROL-ANGGOTA_KOMITE_MEDIK",
+                    "ROL-KETUA_KOMITE_MEDIK",
+                  ].includes(role) &&
+                  ["ACCEPTED", "UNDER_REVIEW"].includes(cmp.status)
+                    ? `
+                  <button onclick="openReviewModal('${cmp.complaint_id}')" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded-xl text-xs font-semibold shadow-sm">
+                    <i class="fa-solid fa-stethoscope mr-1"></i> Input Telaah
+                  </button>
+                  <button onclick="openRecommendationModal('${cmp.complaint_id}')" class="bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-xl text-xs font-semibold shadow-sm">
+                    <i class="fa-solid fa-file-circle-check mr-1"></i> Rekomendasi
+                  </button>
+                `
+                    : ""
+                }
+
+                ${
+                  [
+                    "ROL-ADMIN",
+                    "ROL-SEKRETARIAT",
+                    "ROL-ANGGOTA_KOMITE_MEDIK",
+                  ].includes(role) && cmp.status === "RECOMMENDATION"
+                    ? `
+                  <button onclick="openFollowUpModal('${cmp.complaint_id}')" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-xl text-xs font-semibold shadow-sm">
+                    <i class="fa-solid fa-bars-progress mr-1"></i> Tindak Lanjut
+                  </button>
+                `
+                    : ""
+                }
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 text-xs">
+                  <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Informasi Kejadian</h3>
+                  
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <p class="text-slate-400">Kategori</p>
+                      <p class="font-semibold text-slate-700 mt-0.5">${cmp.category_id}</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-400">Prioritas</p>
+                      <p class="font-semibold ${getPriorityTextColor(cmp.priority_id)} mt-0.5">${cmp.priority_id}</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-400">Tanggal Kejadian</p>
+                      <p class="font-semibold text-slate-700 mt-0.5">${cmp.incident_date}</p>
+                    </div>
+                    <div>
+                      <p class="text-slate-400">Lokasi</p>
+                      <p class="font-semibold text-slate-700 mt-0.5">${cmp.incident_location || "-"}</p>
+                    </div>
+                  </div>
+
+                  <div class="pt-2">
+                    <p class="text-slate-400">Pihak Terkait</p>
+                    <p class="font-semibold text-slate-700 mt-0.5">${cmp.related_party || "-"}</p>
+                  </div>
+
+                  <div class="pt-2">
+                    <p class="text-slate-400 mb-1">Kronologi / Deskripsi Pengaduan</p>
+                    <div class="bg-slate-50 p-4 rounded-xl text-slate-700 leading-relaxed whitespace-pre-line border border-slate-100">
+                      ${cmp.description}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Timeline Progres</h3>
+                
+                <div class="space-y-4 relative">
+                  ${
+                    timeline.length > 0
+                      ? timeline
+                          .map(
+                            (t) => `
+                    <div class="timeline-item relative pl-8 pb-3">
+                      <div class="absolute left-0 top-1 h-5 w-5 rounded-full bg-medical-100 text-medical-600 flex items-center justify-center text-[10px] font-bold border border-medical-500">
+                        <i class="fa-solid fa-check"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-bold text-slate-800">${t.event_title}</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">${t.event_description}</p>
+                        <span class="text-[10px] text-slate-400 block mt-1">${formatDate(t.event_date)} • ${t.actor_name}</span>
+                      </div>
+                    </div>
+                  `,
+                          )
+                          .join("")
+                      : '<p class="text-xs text-slate-400">Belum ada riwayat timeline.</p>'
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        } catch (err) {
+          container.innerHTML =
+            '<div class="p-6 text-rose-600 bg-rose-50 rounded-2xl">Gagal memuat detail.</div>';
+        }
+      }
+
+      async function renderReportsView(container) {
+        container.innerHTML = `
+        <div class="space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800">Laporan Rekapitulasi Komite Medik</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Export data dan analisis performa penanganan pengaduan</p>
+            </div>
+            <button onclick="triggerExportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-md flex items-center space-x-2">
+              <i class="fa-solid fa-file-csv"></i>
+              <span>Export CSV</span>
+            </button>
+          </div>
+
+          <div id="reports-summary-container" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-xs">
+            <p class="text-slate-400 text-center py-4">Memuat data rekapitulasi...</p>
+          </div>
+        </div>
+      `;
+
+        try {
+          const res = await API.call("getReportData", State.sessionToken);
+          if (res.success && res.data) {
+            const sum = res.data.summary;
+            document.getElementById("reports-summary-container").innerHTML = `
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                <p class="text-slate-400 text-[10px] uppercase font-bold">Total Pengaduan</p>
+                <p class="text-xl font-bold text-slate-800 mt-1">${sum.total_complaints}</p>
+              </div>
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                <p class="text-slate-400 text-[10px] uppercase font-bold">Proses Telaah</p>
+                <p class="text-xl font-bold text-sky-600 mt-1">${sum.in_review}</p>
+              </div>
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                <p class="text-slate-400 text-[10px] uppercase font-bold">Selesai</p>
+                <p class="text-xl font-bold text-emerald-600 mt-1">${sum.completed}</p>
+              </div>
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center">
+                <p class="text-slate-400 text-[10px] uppercase font-bold">Rata-rata Durasi SLA</p>
+                <p class="text-xl font-bold text-medical-600 mt-1">${sum.avg_resolution_days} Hari</p>
+              </div>
+            </div>
+          `;
+          }
+        } catch (e) {
+          document.getElementById("reports-summary-container").innerHTML =
+            '<p class="text-rose-500">Gagal memuat rekapitulasi.</p>';
+        }
+      }
+
+      async function triggerExportCSV() {
+        try {
+          const res = await API.call("exportReport", State.sessionToken);
+          if (res.success && res.data) {
+            const blob = new Blob([res.data.csv_data], {
+              type: "text/csv;charset=utf-8;",
+            });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", res.data.filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("File CSV berhasil diunduh", "success");
+          }
+        } catch (e) {
+          showToast("Gagal memproses export CSV", "error");
+        }
+      }
+
+      let auditSearchDebounce;
+      let currentAuditPage = 1;
+
+      function renderAuditLogView(container) {
+        container.innerHTML = `
+        <div class="space-y-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800">Audit Trail Log Sistem</h3>
+              <p class="text-[11px] text-slate-400">Seluruh rekam jejak aktivitas penting tercatat secara otomatis.</p>
+            </div>
+
+            <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+              <div class="relative w-full sm:w-64">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                <input type="text" id="filter-audit-search" oninput="debounceFilterAuditLog()" placeholder="Cari user, aksi, deskripsi..." class="w-full pl-9 pr-3 py-1.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-medical-500">
+              </div>
+              <button onclick="loadAuditLogsTable(1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1 shrink-0">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span class="hidden sm:inline">Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 border-b border-slate-100 text-slate-500 font-semibold uppercase tracking-wider text-[10px]">
+                  <tr>
+                    <th class="py-3 px-4">Waktu</th>
+                    <th class="py-3 px-4">Pengguna</th>
+                    <th class="py-3 px-4">Modul / Aksi</th>
+                    <th class="py-3 px-4">Record ID</th>
+                    <th class="py-3 px-4">Deskripsi / Perubahan</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-log-table-body" class="divide-y divide-slate-100">
+                  <tr><td colspan="5" class="text-center py-6 text-slate-400">Memuat data audit log...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="audit-log-pagination" class="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <!-- Pagination controls injected dynamically -->
+            </div>
+          </div>
+        </div>
+      `;
+
+        loadAuditLogsTable(1);
+      }
+
+      function debounceFilterAuditLog() {
+        clearTimeout(auditSearchDebounce);
+        auditSearchDebounce = setTimeout(() => loadAuditLogsTable(1), 300);
+      }
+
+      async function loadAuditLogsTable(page = 1) {
+        currentAuditPage = page;
+        const tbody = document.getElementById("audit-log-table-body");
+        const pagEl = document.getElementById("audit-log-pagination");
+        const searchVal =
+          document.getElementById("filter-audit-search")?.value || "";
+
+        if (!tbody) return;
+
+        tbody.innerHTML =
+          '<tr><td colspan="5" class="text-center py-6 text-slate-400"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memuat data...</td></tr>';
+
+        try {
+          const res = await API.call("getAuditLogs", State.sessionToken, {
+            page: page,
+            pageSize: 15,
+            search: searchVal,
+          });
+
+          if (res && res.success && res.data && res.data.length > 0) {
+            tbody.innerHTML = res.data
+              .map(
+                (item) => `
+            <tr class="hover:bg-slate-50/80 transition-colors">
+              <td class="py-3 px-4 whitespace-nowrap text-slate-500 font-mono text-[11px]">
+                ${formatDateTime(item.timestamp)}
+              </td>
+              <td class="py-3 px-4 whitespace-nowrap">
+                <p class="font-bold text-slate-800">${item.user_name || item.username || "System"}</p>
+                <p class="text-[10px] text-slate-400">@${item.username || "system"}</p>
+              </td>
+              <td class="py-3 px-4 whitespace-nowrap">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${getActionBadgeClass(item.action)}">${item.action || "ACTION"}</span>
+                <span class="text-[10px] font-medium text-slate-400 block mt-0.5">${item.module || "SYSTEM"}</span>
+              </td>
+              <td class="py-3 px-4 font-mono text-[11px] text-slate-600 whitespace-nowrap">
+                ${item.record_id || "-"}
+              </td>
+              <td class="py-3 px-4">
+                <p class="text-slate-700 font-medium">${item.description || "-"}</p>
+                ${
+                  item.old_value || item.new_value
+                    ? `
+                  <div class="mt-1 text-[10px] text-slate-500 font-mono bg-slate-50 p-1.5 rounded border border-slate-200">
+                    <span class="text-rose-600 line-through">${item.old_value || "(kosong)"}</span>
+                    <i class="fa-solid fa-arrow-right mx-1 text-slate-400"></i>
+                    <span class="text-emerald-600 font-bold">${item.new_value || "(kosong)"}</span>
+                  </div>
+                `
+                    : ""
+                }
+              </td>
+            </tr>
+          `,
+              )
+              .join("");
+
+            if (pagEl && res.meta) {
+              const { page, totalPages, total } = res.meta;
+              pagEl.innerHTML = `
+              <span>Menampilkan halaman <strong>${page}</strong> dari <strong>${totalPages}</strong> (Total: ${total} log)</span>
+              <div class="flex items-center space-x-1">
+                <button onclick="loadAuditLogsTable(${page - 1})" ${page <= 1 ? 'disabled class="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-300 cursor-not-allowed"' : 'class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold"'}>
+                  <i class="fa-solid fa-chevron-left"></i> Prev
+                </button>
+                <button onclick="loadAuditLogsTable(${page + 1})" ${page >= totalPages ? 'disabled class="px-2.5 py-1 rounded-lg border border-slate-200 text-slate-300 cursor-not-allowed"' : 'class="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold"'}>
+                  Next <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            `;
+            }
+          } else if (res && res.success) {
+            tbody.innerHTML =
+              '<tr><td colspan="5" class="text-center py-6 text-slate-400">Tidak ada riwayat audit log ditemukan.</td></tr>';
+            if (pagEl) pagEl.innerHTML = "";
+          } else {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-rose-500">${(res && res.message) || "Gagal mengambil audit log."}</td></tr>`;
+            if (pagEl) pagEl.innerHTML = "";
+          }
+        } catch (err) {
+          tbody.innerHTML =
+            '<tr><td colspan="5" class="text-center py-6 text-rose-500">Error: ' +
+            err.message +
+            "</td></tr>";
+          if (pagEl) pagEl.innerHTML = "";
+        }
+      }
+
+      function getActionBadgeClass(action) {
+        if (!action) return "bg-slate-100 text-slate-700";
+        const act = action.toUpperCase();
+        if (act.includes("LOGIN")) return "bg-blue-100 text-blue-800";
+        if (act.includes("LOGOUT")) return "bg-slate-100 text-slate-600";
+        if (act.includes("CREATE")) return "bg-emerald-100 text-emerald-800";
+        if (act.includes("UPDATE") || act.includes("STATUS"))
+          return "bg-amber-100 text-amber-800";
+        if (act.includes("DELETE") || act.includes("REJECT"))
+          return "bg-rose-100 text-rose-800";
+        if (act.includes("VERIFY") || act.includes("REVIEW"))
+          return "bg-sky-100 text-sky-800";
+        return "bg-purple-100 text-purple-800";
+      }
+
+      function formatDateTime(isoStr) {
+        if (!isoStr) return "-";
+        const dt = new Date(isoStr);
+        if (isNaN(dt.getTime())) return isoStr;
+        return (
+          dt.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }) +
+          " " +
+          dt.toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          })
+        );
+      }
+
+      function renderMasterDataView(container) {
+        container.innerHTML = `
+        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-3">Master Data Management</h3>
+          <p class="text-xs text-slate-500">Kelola data Unit, Kategori Pengaduan, Prioritas, dan Status Workflow.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+            <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+              <h4 class="font-bold text-xs text-slate-700">Daftar Unit / Instansi</h4>
+              <p class="text-[11px] text-slate-400 mt-1">IGD, Rawat Inap, ICU, Operasi, Radiologi, Farmasi, Komite Medik</p>
+            </div>
+            <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+              <h4 class="font-bold text-xs text-slate-700">Kategori Pengaduan</h4>
+              <p class="text-[11px] text-slate-400 mt-1">Etik, Disiplin, Profesionalisme, Mutu Pelayanan, Keselamatan Pasien</p>
+            </div>
+            <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+              <h4 class="font-bold text-xs text-slate-700">Workflow & Status</h4>
+              <p class="text-[11px] text-slate-400 mt-1">SUBMITTED, ACCEPTED, UNDER_REVIEW, RECOMMENDATION, FOLLOW_UP, COMPLETED</p>
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      function showPublicView(mode) {
+        document.getElementById("login-screen").classList.add("hidden");
+        document
+          .getElementById("public-view-container")
+          .classList.remove("hidden");
+        const area = document.getElementById("public-content-area");
+
+        if (mode === "create") {
+          area.innerHTML = `
+          <h3 class="text-lg font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4">Pengaduan Publik / Non-Login</h3>
+          <form onsubmit="handlePublicSubmit(event)" class="space-y-4 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nama Pelapor / Email (Opsional)</label>
+              <input type="text" id="pub-reporter" placeholder="Dapat dikosongkan jika anonim" class="w-full border border-slate-200 rounded-xl p-2.5">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Kategori *</label>
+              <select id="pub-category" required class="w-full border border-slate-200 rounded-xl p-2.5">
+                <option value="MUTU_PELAYANAN">Mutu Pelayanan</option>
+                <option value="ETIK">Etik Medik</option>
+                <option value="KESELAMATAN_PASIEN">Keselamatan Pasien</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Tanggal Kejadian *</label>
+              <input type="date" id="pub-date" required class="w-full border border-slate-200 rounded-xl p-2.5">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Kronologi Kejadian *</label>
+              <textarea id="pub-desc" rows="4" required placeholder="Jelaskan detail kejadian..." class="w-full border border-slate-200 rounded-xl p-2.5"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-medical-600 text-white font-bold py-3 rounded-xl hover:bg-medical-700 shadow-md">Kirim Pengaduan Publik</button>
+          </form>
+        `;
+        } else {
+          area.innerHTML = `
+          <h3 class="text-lg font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4">Lacak Status Pengaduan</h3>
+          <form onsubmit="handlePublicTrack(event)" class="space-y-4 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Nomor Pengaduan</label>
+              <input type="text" id="pub-number" required placeholder="Contoh: PM-2026-00001" class="w-full border border-slate-200 rounded-xl p-2.5">
+            </div>
+            <button type="submit" class="w-full bg-teal-600 text-white font-bold py-3 rounded-xl hover:bg-teal-700 shadow-md">Cari Pengaduan</button>
+          </form>
+          <div id="pub-track-result" class="mt-4"></div>
+        `;
+        }
+      }
+
+      function hidePublicView() {
+        document
+          .getElementById("public-view-container")
+          .classList.add("hidden");
+        document.getElementById("login-screen").classList.remove("hidden");
+      }
+
+      async function handlePublicSubmit(e) {
+        e.preventDefault();
+        const payload = {
+          reporter_name:
+            document.getElementById("pub-reporter").value || "Anonim Publik",
+          category_id: document.getElementById("pub-category").value,
+          incident_date: document.getElementById("pub-date").value,
+          description: document.getElementById("pub-desc").value,
+        };
+
+        const res = await API.call("createPublicComplaint", payload);
+        if (res.success) {
+          showToast(
+            "Pengaduan dikirim! Nomor: " +
+              (res.data.complaint
+                ? res.data.complaint.complaint_number
+                : "PM-2026-00001"),
+            "success",
+          );
+          hidePublicView();
+        }
+      }
+
+      async function handlePublicTrack(e) {
+        e.preventDefault();
+        const num = document.getElementById("pub-number").value;
+        const res = await API.call("getPublicComplaintStatus", num);
+        const resEl = document.getElementById("pub-track-result");
+
+        if (res.success && res.data) {
+          const c = res.data;
+          resEl.innerHTML = `
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+            <p class="font-bold text-slate-800">Nomor: ${c.complaint_number}</p>
+            <p class="text-slate-600">Status: <span class="font-bold text-medical-600">${c.status}</span></p>
+            <p class="text-slate-500">Tanggal Pengajuan: ${formatDate(c.created_at)}</p>
+          </div>
+        `;
+        } else {
+          resEl.innerHTML = `<div class="p-3 bg-rose-50 text-rose-700 rounded-xl text-xs">Nomor pengaduan tidak ditemukan.</div>`;
+        }
+      }
+
+      function openVerificationModal(complaintId) {
+        showModal(`
+        <h3 class="text-sm font-bold text-slate-800 mb-4">Verifikasi Sekretariat</h3>
+        <form onsubmit="handleVerificationSubmit(event, '${complaintId}')" class="space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Keputusan Verifikasi</label>
+            <select id="vrf-status" required class="w-full border border-slate-200 rounded-xl p-2.5">
+              <option value="ACCEPTED">Terima (Valid)</option>
+              <option value="REJECTED">Tolak (Invalid)</option>
+              <option value="NEED_INFORMATION">Minta Informasi Tambahan</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Catatan Verifikasi</label>
+            <textarea id="vrf-notes" rows="3" required class="w-full border border-slate-200 rounded-xl p-2.5" placeholder="Masukkan pertimbangan..."></textarea>
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button type="button" onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-slate-600">Batal</button>
+            <button type="submit" class="bg-medical-600 text-white px-4 py-1.5 rounded-lg font-semibold">Simpan Verifikasi</button>
+          </div>
+        </form>
+      `);
+      }
+
+      async function handleVerificationSubmit(e, complaintId) {
+        e.preventDefault();
+        const status = document.getElementById("vrf-status").value;
+        const notes = document.getElementById("vrf-notes").value;
+
+        const res = await API.call(
+          "verifyComplaint",
+          State.sessionToken,
+          complaintId,
+          { verification_status: status, verification_notes: notes },
+        );
+        if (res.success) {
+          showToast("Verifikasi berhasil disimpan", "success");
+          closeModal();
+          navigate("complaint-detail", { complaintId: complaintId });
+        }
+      }
+
+      function openReviewModal(complaintId) {
+        showModal(`
+        <h3 class="text-sm font-bold text-slate-800 mb-4">Input Hasil Telaah Komite Medik</h3>
+        <form onsubmit="handleReviewSubmit(event, '${complaintId}')" class="space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Analisis Medis & Temuan</label>
+            <textarea id="rev-analysis" rows="4" required class="w-full border border-slate-200 rounded-xl p-2.5" placeholder="Tuliskan hasil analisis komite medik..."></textarea>
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button type="button" onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-slate-600">Batal</button>
+            <button type="submit" class="bg-medical-600 text-white px-4 py-1.5 rounded-lg font-semibold">Simpan Telaah</button>
+          </div>
+        </form>
+      `);
+      }
+
+      async function handleReviewSubmit(e, complaintId) {
+        e.preventDefault();
+        const analysis = document.getElementById("rev-analysis").value;
+        const res = await API.call("createReview", State.sessionToken, {
+          complaint_id: complaintId,
+          analysis: analysis,
+        });
+        if (res.success) {
+          showToast("Telaah komite berhasil disimpan", "success");
+          closeModal();
+          navigate("complaint-detail", { complaintId: complaintId });
+        }
+      }
+
+      function openRecommendationModal(complaintId) {
+        showModal(`
+        <h3 class="text-sm font-bold text-slate-800 mb-4">Buat Rekomendasi Komite Medik</h3>
+        <form onsubmit="handleRecommendationSubmit(event, '${complaintId}')" class="space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tipe Rekomendasi</label>
+            <select id="rcm-type" required class="w-full border border-slate-200 rounded-xl p-2.5">
+              <option value="PEMBINAAN">Pembinaan</option>
+              <option value="AUDIT_MEDIS">Audit Medis</option>
+              <option value="EVALUASI_SOP">Evaluasi SOP</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Teks Rekomendasi</label>
+            <textarea id="rcm-text" rows="3" required class="w-full border border-slate-200 rounded-xl p-2.5"></textarea>
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button type="button" onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-slate-600">Batal</button>
+            <button type="submit" class="bg-medical-600 text-white px-4 py-1.5 rounded-lg font-semibold">Simpan Rekomendasi</button>
+          </div>
+        </form>
+      `);
+      }
+
+      async function handleRecommendationSubmit(e, complaintId) {
+        e.preventDefault();
+        const type = document.getElementById("rcm-type").value;
+        const text = document.getElementById("rcm-text").value;
+        const res = await API.call("createRecommendation", State.sessionToken, {
+          complaint_id: complaintId,
+          recommendation_type: type,
+          recommendation_text: text,
+        });
+        if (res.success) {
+          showToast("Rekomendasi berhasil dikirim", "success");
+          closeModal();
+          navigate("complaint-detail", { complaintId: complaintId });
+        }
+      }
+
+      function openFollowUpModal(complaintId) {
+        showModal(`
+        <h3 class="text-sm font-bold text-slate-800 mb-4">Tindak Lanjut Rekomendasi</h3>
+        <form onsubmit="handleFollowUpSubmit(event, '${complaintId}')" class="space-y-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Deskripsi Rencana Tindak Lanjut</label>
+            <textarea id="flp-desc" rows="3" required class="w-full border border-slate-200 rounded-xl p-2.5"></textarea>
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button type="button" onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-slate-600">Batal</button>
+            <button type="submit" class="bg-purple-600 text-white px-4 py-1.5 rounded-lg font-semibold">Simpan Tindak Lanjut</button>
+          </div>
+        </form>
+      `);
+      }
+
+      async function handleFollowUpSubmit(e, complaintId) {
+        e.preventDefault();
+        const desc = document.getElementById("flp-desc").value;
+        const res = await API.call("createFollowUp", State.sessionToken, {
+          complaint_id: complaintId,
+          followup_description: desc,
+        });
+        if (res.success) {
+          showToast("Tindak lanjut dimulai", "success");
+          closeModal();
+          navigate("complaint-detail", { complaintId: complaintId });
+        }
+      }
+
+      function showModal(contentHtml) {
+        const modal = document.getElementById("modal-container");
+        const container = document.getElementById("modal-content");
+        container.innerHTML = contentHtml;
+        modal.classList.remove("hidden");
+      }
+
+      function closeModal() {
+        document.getElementById("modal-container").classList.add("hidden");
+      }
+
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+
+        const bgColor =
+          type === "success"
+            ? "bg-emerald-600"
+            : type === "error"
+              ? "bg-rose-600"
+              : "bg-slate-800";
+        toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg text-xs font-semibold flex items-center space-x-2 transition-all transform translate-y-2 pointer-events-auto`;
+        toast.innerHTML = `<i class="fa-solid fa-circle-info"></i><span>${message}</span>`;
+
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.remove();
+        }, 3500);
+      }
+
+      function getStatusBadgeClass(status) {
+        switch (status) {
+          case "SUBMITTED":
+            return "bg-amber-100 text-amber-800";
+          case "ACCEPTED":
+            return "bg-sky-100 text-sky-800";
+          case "UNDER_REVIEW":
+            return "bg-indigo-100 text-indigo-800";
+          case "RECOMMENDATION":
+            return "bg-teal-100 text-teal-800";
+          case "FOLLOW_UP":
+            return "bg-purple-100 text-purple-800";
+          case "COMPLETED":
+            return "bg-emerald-100 text-emerald-800";
+          case "REJECTED":
+            return "bg-rose-100 text-rose-800";
+          default:
+            return "bg-slate-100 text-slate-800";
+        }
+      }
+
+      function getPriorityTextColor(priority) {
+        switch (priority) {
+          case "CRITICAL":
+            return "text-rose-600 font-bold";
+          case "HIGH":
+            return "text-amber-600";
+          case "MEDIUM":
+            return "text-sky-600";
+          default:
+            return "text-slate-500";
+        }
+      }
+
+      function formatDate(isoStr) {
+        if (!isoStr) return "-";
+        const dt = new Date(isoStr);
+        return dt.toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      function toggleMobileSidebar() {
+        const sidebar = document.getElementById("mobile-sidebar");
+        const backdrop = document.getElementById("mobile-sidebar-backdrop");
+        sidebar.classList.toggle("-translate-x-full");
+        backdrop.classList.toggle("hidden");
+      }
+
+      async function handleLoginSubmit(e) {
+        e.preventDefault();
+        const user = document.getElementById("login-username").value;
+        const pass = document.getElementById("login-password").value;
+        const errorEl = document.getElementById("login-error");
+        const btnText = document.getElementById("login-btn-text");
+        const btnSpinner = document.getElementById("login-btn-spinner");
+
+        errorEl.classList.add("hidden");
+        btnText.innerText = "Memproses...";
+        btnSpinner.classList.remove("hidden");
+
+        try {
+          const res = await API.call("login", user, pass);
+          if (res.success && res.data) {
+            State.sessionToken = res.data.sessionToken;
+            State.currentUser = res.data.user;
+            localStorage.setItem("simpel_medik_token", State.sessionToken);
+
+            initAppShell();
+            navigate("dashboard");
+            showToast(
+              "Selamat datang, " + State.currentUser.full_name,
+              "success",
+            );
+          } else {
+            document.getElementById("login-error-text").innerText =
+              res.message || "Login gagal";
+            errorEl.classList.remove("hidden");
+          }
+        } catch (err) {
+          document.getElementById("login-error-text").innerText =
+            "Terjadi kesalahan sistem";
+          errorEl.classList.remove("hidden");
+        } finally {
+          btnText.innerText = "Masuk Ke Sistem";
+          btnSpinner.classList.add("hidden");
+        }
+      }
+
+      function handleLogout() {
+        if (confirm("Apakah Anda yakin ingin keluar dari aplikasi?")) {
+          State.sessionToken = null;
+          State.currentUser = null;
+          localStorage.removeItem("simpel_medik_token");
+          showLoginScreen();
+          showToast("Anda telah keluar", "info");
+        }
+      }
+
+      function getMockResponse(fnName, args) {
+        if (fnName === "login") {
+          return {
+            success: true,
+            data: {
+              sessionToken: "mock_token_123",
+              user: {
+                user_id: "USR-ADMIN",
+                username: args[0],
+                full_name: "Administrator Komite",
+                role_id: "ROL-ADMIN",
+                unit_id: "KOMITE_MEDIK",
+              },
+            },
+          };
+        }
+        if (fnName === "getAuditLogs") {
+          return {
+            success: true,
+            data: [
+              {
+                timestamp: "2026-07-29T00:45:00Z",
+                username: "admin",
+                user_name: "Administrator Komite",
+                action: "LOGIN",
+                module: "AUTH",
+                record_id: "USR-ADMIN",
+                description: "User login berhasil",
+              },
+              {
+                timestamp: "2026-07-28T14:20:00Z",
+                username: "sekretaris",
+                user_name: "Sekretariat Medik",
+                action: "STATUS_CHANGE",
+                module: "COMPLAINT",
+                record_id: "PM-2026-00001",
+                description: "Verifikasi pengaduan disetujui",
+                old_value: "SUBMITTED",
+                new_value: "ACCEPTED",
+              },
+              {
+                timestamp: "2026-07-28T10:00:00Z",
+                username: "dr_ahmad",
+                user_name: "Dr. Ahmad",
+                action: "CREATE",
+                module: "COMPLAINT",
+                record_id: "PM-2026-00001",
+                description: "Pengaduan baru dibuat",
+              },
+            ],
+            meta: { page: 1, pageSize: 15, total: 3, totalPages: 1 },
+          };
+        }
+        if (fnName === "validateSession") {
+          return {
+            success: true,
+            data: {
+              user: {
+                user_id: "USR-ADMIN",
+                username: "admin",
+                full_name: "Administrator Komite",
+                role_id: "ROL-ADMIN",
+                unit_id: "KOMITE_MEDIK",
+              },
+            },
+          };
+        }
+        if (fnName === "getDashboardSummary") {
+          return {
+            success: true,
+            data: {
+              total_complaints: 12,
+              submitted_count: 3,
+              under_review_count: 4,
+              followup_count: 2,
+              completed_count: 3,
+              overdue_complaints: 1,
+            },
+          };
+        }
+        if (fnName === "getComplaints") {
+          return {
+            success: true,
+            data: [
+              {
+                complaint_id: "CMP-001",
+                complaint_number: "PM-2026-00001",
+                reporter_name: "Dr. Ahmad",
+                reporter_unit_id: "IGD",
+                category_id: "ETIK",
+                priority_id: "HIGH",
+                status: "SUBMITTED",
+                created_at: "2026-07-28T10:00:00Z",
+                description:
+                  "Kendala komunikasi antar dokter pada penanganan gawat darurat.",
+              },
+              {
+                complaint_id: "CMP-002",
+                complaint_number: "PM-2026-00002",
+                reporter_name: "Perawat Rina",
+                reporter_unit_id: "ICU",
+                category_id: "MUTU_PELAYANAN",
+                priority_id: "CRITICAL",
+                status: "UNDER_REVIEW",
+                created_at: "2026-07-27T14:30:00Z",
+                description:
+                  "Keterlambatan respon konsultasi dokter spesialis.",
+              },
+            ],
+          };
+        }
+        if (fnName === "getComplaintById") {
+          return {
+            success: true,
+            data: {
+              complaint: {
+                complaint_id: "CMP-001",
+                complaint_number: "PM-2026-00001",
+                reporter_name: "Dr. Ahmad",
+                reporter_unit_id: "IGD",
+                category_id: "ETIK",
+                priority_id: "HIGH",
+                status: "SUBMITTED",
+                created_at: "2026-07-28T10:00:00Z",
+                incident_date: "2026-07-27",
+                incident_location: "Ruang IGD",
+                related_party: "Tim Jaga Shift Malam",
+                description:
+                  "Kendala komunikasi antar dokter pada penanganan gawat darurat.",
+              },
+              timeline: [
+                {
+                  timeline_id: "TML-1",
+                  event_title: "Pengaduan Dibuat",
+                  event_description: "Pengaduan berhasil dibuat",
+                  actor_name: "Dr. Ahmad",
+                  event_date: "2026-07-28T10:00:00Z",
+                },
+              ],
+            },
+          };
+        }
+        if (fnName === "getReportData") {
+          return {
+            success: true,
+            data: {
+              summary: {
+                total_complaints: 12,
+                in_review: 4,
+                completed: 3,
+                avg_resolution_days: 4.2,
+              },
+            },
+          };
+        }
+        return { success: true, data: {} };
+      }
+    </script>
+  </body>
+</html>

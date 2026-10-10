@@ -1,34 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Aplikasi GAS</title>
-  </head>
-  <body>
-    <h2>Koneksi Google Apps Script</h2>
-    <button id="btn">Tes Koneksi</button>
-    <pre id="hasil">Belum terhubung</pre>
-
-    <script>
-
-        const API_URL = "https://script.google.com/macros/s/AKfycbynjeJJlInF0y7rZAdq2C9CMomXe4bLCjced50Fzv2DMK9nvO-NifDZUhrd44gZN36Itg/exec";
-        
-      document.getElementById("btn").onclick = async () => {
-        const hasil = document.getElementById("hasil");
-        hasil.textContent = "Menghubungkan...";
-  
-        try {
-          const response = await fetch(API_URL);
-          const data = await response.json();
-          hasil.textContent = JSON.stringify(data, null, 2);
-        } catch (error) {
-          hasil.textContent =
-            "Koneksi gagal: " + error.message +
-            "\nPeriksa konfigurasi CORS dan akses Web App.";
-        }
-      };
-
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Komite Etik</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <iframe
+    src="https://script.google.com/macros/s/AKfycbynjeJJlInF0y7rZAdq2C9CMomXe4bLCjced50Fzv2DMK9nvO-NifDZUhrd44gZN36Itg/exec"
+    title="Aplikasi Komite Etik"
+    allow="geolocation">
+  </iframe>
+</body>
 </html>
+

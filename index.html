@@ -11,24 +11,38 @@
     <pre id="hasil">Belum terhubung</pre>
 
     <script>
-      const API_URL =
-        "https://script.google.com/macros/s/AKfycbzF-oS02RIUjzhQFVmGvd_2kSv09IiPt5MjEoUOWMRpYR_ZZ1DbGRTU8023QlbnFmZHbA/exec";
 
-      document.getElementById("btn").onclick = async () => {
-        const hasil = document.getElementById("hasil");
-        hasil.textContent = "Menghubungkan...";
-
-        try {
-          const response = await fetch(API_URL);
-          const data = await response.json();
-          hasil.textContent = JSON.stringify(data, null, 2);
-        } catch (error) {
-          hasil.textContent =
-            "Koneksi gagal: " +
-            error.message +
-            "\nPeriksa konfigurasi CORS dan akses Web App.";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzJj2aY4AbJKtlIKbiLz6KRbZTqvIVlJM33snUYCGZSzk_nj305jg2KcFgcjOiP_CXo2A/exec";
+        
+        function tesKoneksi() {
+          const hasil = document.getElementById("hasil");
+          hasil.textContent = "Menghubungkan...";
+        
+          const callback = "gasCallback";
+        
+          window[callback] = function(data) {
+            hasil.textContent = JSON.stringify(data, null, 2);
+            delete window[callback];
+            script.remove();
+          };
+        
+          const script = document.createElement("script");
+          script.src = API_URL +
+            "?callback=" + callback +
+            "&t=" + Date.now();
+        
+          script.onerror = function() {
+            hasil.textContent =
+              "Gagal mengakses Apps Script. Periksa URL dan izin akses.";
+            delete window[callback];
+            script.remove();
+          };
+        
+          document.body.appendChild(script);
         }
-      };
+        
+        document.getElementById("btn").onclick = tesKoneksi;
+
     </script>
   </body>
 </html>

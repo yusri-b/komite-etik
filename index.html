@@ -14,34 +14,20 @@
 
         const API_URL = "https://script.google.com/macros/s/AKfycbynjeJJlInF0y7rZAdq2C9CMomXe4bLCjced50Fzv2DMK9nvO-NifDZUhrd44gZN36Itg/exec";
         
-        function tesKoneksi() {
-          const hasil = document.getElementById("hasil");
-          hasil.textContent = "Menghubungkan...";
-        
-          const callback = "gasCallback";
-        
-          window[callback] = function(data) {
-            hasil.textContent = JSON.stringify(data, null, 2);
-            delete window[callback];
-            script.remove();
-          };
-        
-          const script = document.createElement("script");
-          script.src = API_URL +
-            "?callback=" + callback +
-            "&t=" + Date.now();
-        
-          script.onerror = function() {
-            hasil.textContent =
-              "Gagal mengakses Apps Script. Periksa URL dan izin akses.";
-            delete window[callback];
-            script.remove();
-          };
-        
-          document.body.appendChild(script);
+      document.getElementById("btn").onclick = async () => {
+        const hasil = document.getElementById("hasil");
+        hasil.textContent = "Menghubungkan...";
+  
+        try {
+          const response = await fetch(API_URL);
+          const data = await response.json();
+          hasil.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+          hasil.textContent =
+            "Koneksi gagal: " + error.message +
+            "\nPeriksa konfigurasi CORS dan akses Web App.";
         }
-        
-        document.getElementById("btn").onclick = tesKoneksi;
+      };
 
     </script>
   </body>
